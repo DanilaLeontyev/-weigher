@@ -1,7 +1,7 @@
 "use-strict";
 
 var gulp = require("gulp");
-var sass = require("gulp-sass");  
+var sass = require("gulp-sass");
 var plumber = require("gulp-plumber");
 var csso = require("gulp-csso");
 var postcss = require("gulp-postcss");
@@ -65,7 +65,7 @@ gulp.task("default", function(fn) {
 gulp.task("build", function(fn) { //run для последовательного выполнения, иначе асинхронное
 	run(
 		"html:build",
-		"js:build", 
+		"js:build",
 		"style:build",
 		"fonts:build",
 		"image:build",
@@ -98,7 +98,7 @@ gulp.task("style:build", function() {
 	.pipe(sass())
 	.pipe(postcss([
 		autoprefixer({browsers: [
-			"last 1 version",
+			"last 3 version",
 			"last 2 Chrome version",
 			"last 2 Opera version",
 			"last 2 Firefox version",
@@ -135,7 +135,7 @@ gulp.task("js:build", function() {
 */
 
 
-gulp.task("fonts:build", function() { 
+gulp.task("fonts:build", function() {
 	gulp.src(path.src.fonts)
 	.pipe(gulp.dest(path.build.fonts));
 });
@@ -152,7 +152,7 @@ gulp.task("image:build", function() {
 		imagemin.optipng({optimizationLever: 3}),
 		imagemin.jpegtran({proggressive: true})
 	]))
-	
+
 	.pipe(gulp.dest(path.build.img));
 });
 
@@ -169,7 +169,8 @@ gulp.task("svgIcons:build", function() {
 		inlineSvg: true
 	}))
 	.pipe(rename("icons.svg"))
-	.pipe(gulp.dest(path.build.img));
+	.pipe(gulp.dest(path.build.img))
+        .pipe(gulp.dest('src/img'));
 });
 
 
@@ -191,7 +192,7 @@ gulp.task("watch", function() {
 	server.init({
 		server: "build"
 	});
-	
+
 	gulp.watch(path.watch.style, ["style:build"]);
 	gulp.watch(path.watch.html, ["html:build"]);
 	gulp.watch(path.watch.img, ["image:build"]);
